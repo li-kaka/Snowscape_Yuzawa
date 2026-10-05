@@ -216,6 +216,9 @@ body {
 
 .main-title {
     animation-delay: 1.5s;
+    display: flex;
+    justify-content: center;
+    gap: 0.75em;
     font-size: 120px;
     font-weight: 400;
     margin-bottom: -60px;
@@ -1409,8 +1412,39 @@ body {
 }
 
 @media (max-width: 768px) {
+    .quiz-hero {
+        padding: 88px 6% 90px;
+    }
+
     .quiz-overlay {
+        width: 100%;
+        max-width: calc(100vw - 48px);
+        min-width: 0;
         padding: 48px 24px;
+    }
+
+    .quiz-eyebrow,
+    .quiz-title,
+    .quiz-lead,
+    .quiz-question,
+    .option-card {
+        overflow-wrap: anywhere;
+    }
+
+    .quiz-eyebrow {
+        letter-spacing: 0.22em;
+    }
+
+    .quiz-title {
+        letter-spacing: 0.08em;
+    }
+
+    .quiz-lead {
+        letter-spacing: 0.04em;
+        line-height: 1.9;
+        max-width: 30em;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .quiz-options {
@@ -1420,198 +1454,397 @@ body {
     .quiz-block {
         margin-bottom: 90px;
     }
-
 }
 
 @media (max-width: 768px) {
-  .hero-section {
-    height: 85vh;
-    background-position: center top;
-    background-attachment: scroll;
+    .hero {
+      height: 85vh;                 /* 不要滿版，避免過度裁切 */
+      background-size: cover;
+      background-position: center top; /* 重點：往上對齊 */
+    }
   }
+  
+  /* ============================================
+   Responsive Fix — 追加到 style.css の最後尾
+   ============================================ */
+
+/* --- Fix 1: iOS Safari の background-attachment: fixed 問題 ---
+   iOS は fixed attachment をサポートしていないため、
+   モバイルでは scroll に切り替える
+------------------------------------------------ */
+@media (max-width: 768px) {
+    .hero-section {
+        background-attachment: scroll;
+        background-position: center center;
+    }
+
+    .about-section {
+        background-attachment: scroll;
+        background-position: center center;
+    }
 }
 
-/* --- Mobile: keep header image fixed through HERO + ABOUT --- */
+/* --- Fix 2: Hero タイトルの重なり修正 ---
+   負の margin による文字重なりを解消する
+------------------------------------------------ */
 @media (max-width: 768px) {
-  body {
-    position: relative;
-  }
+    .main-title {
+        font-size: clamp(40px, 11vw, 56px);
+        letter-spacing: 0.02em;
+        line-height: 1.1;
+        margin-bottom: 0;
+        white-space: nowrap;
+        gap: 0.35em;
+    }
 
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background-image:
-      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-      url('image/header.JPEG');
+    .english-title {
+        font-size: clamp(26px, 8vw, 42px);
+        letter-spacing: 0.04em;
+        margin-bottom: 0;
+        line-height: 1.2;
+    }
+
+    .hero-tagline {
+        margin-top: 20px;
+    }
+
+    .bottom-slogan {
+        margin-top: 40px;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .overlay {
+        padding: 0 5%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-title {
+        font-size: clamp(38px, 10.5vw, 46px);
+    }
+
+    .english-title {
+        font-size: clamp(24px, 7.2vw, 30px);
+    }
+
+    .sub-catchphrase {
+        font-size: 14px;
+        margin-bottom: 16px;
+    }
+
+    .bottom-slogan {
+        font-size: 13px;
+        margin-top: 28px;
+    }
+
+    .hero-cta {
+        margin-top: 24px;
+        gap: 12px;
+    }
+}
+
+/* --- Fix 3: Resort セクションの iOS 対応 ---
+   モバイルでは background-attachment を scroll に変更
+   また、background-size の contain 指定が崩れる問題を修正
+------------------------------------------------ */
+@media (max-width: 768px) {
+    .resort-item {
+        padding: 60px 6%;
+        /* contain は画像が伸びるので cover に戻す */
+    }
+
+    .resort-bg {
+        background-size: cover !important;
+        background-position: center center !important;
+        background-attachment: scroll !important;
+    }
+
+    /* 偶数番目のリゾートの右寄せを解除して、モバイルで左寄せに統一 */
+    .resort-item:nth-child(even) .resort-info {
+        align-items: flex-start;
+        text-align: left;
+        transform: translateX(-40px);
+    }
+
+    .resort-item:nth-child(even).is-visible .resort-info {
+        transform: translateX(0);
+    }
+
+    .resort-item:nth-child(even) .resort-details {
+        margin-left: 0;
+        text-align: left;
+    }
+
+    .resort-item:nth-child(even) .resort-meta {
+        text-align: left;
+    }
+
+    .resort-item:nth-child(even) .resort-link {
+        margin-left: 0;
+    }
+}
+
+/* --- Fix 4: toquiz-media の cta-copy 位置修正 ---
+   absolute + top:% は画像高さに依存するためモバイルで崩れる
+   モバイルでは static レイアウトに切り替える
+------------------------------------------------ */
+@media (max-width: 768px) {
+    .toquiz-media {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cta-copy {
+        position: static;
+        transform: none;
+        width: 90%;
+        padding: 32px 20px;
+        background: rgba(10, 14, 20, 0.55);
+        border-radius: 14px;
+        margin-top: -60px;
+        /* 画像に少し重なる */
+        position: relative;
+        z-index: 5;
+        top: auto;
+        left: auto;
+    }
+}
+
+/* --- Fix 5: About section のテキスト・地図サイズ調整 --- */
+@media (max-width: 768px) {
+    .map-box {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    .text-box {
+        flex: 1 1 100%;
+        max-width: 100%;
+        font-size: 15px;
+        line-height: 2;
+    }
+
+    .eng-sub {
+        font-size: 28px;
+    }
+
+    .jp-sub {
+        font-size: 20px;
+    }
+
+    .about-footer {
+        font-size: 15px;
+        line-height: 2;
+        margin-top: 60px;
+    }
+}
+
+/* --- Fix 6: Quiz ページの微調整 --- */
+@media (max-width: 480px) {
+    .quiz-hero {
+        padding: 88px 6% 80px;
+    }
+
+    .quiz-overlay {
+        width: 100%;
+        min-width: 0;
+        padding: 36px 16px;
+        border-radius: 12px;
+    }
+
+    .quiz-eyebrow,
+    .quiz-title,
+    .quiz-lead,
+    .quiz-question,
+    .option-card {
+        overflow-wrap: anywhere;
+    }
+
+    .quiz-eyebrow {
+        letter-spacing: 0.22em;
+    }
+
+    .quiz-title {
+        letter-spacing: 0.08em;
+    }
+
+    .quiz-lead {
+        letter-spacing: 0.04em;
+        line-height: 1.9;
+        max-width: 18em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .quiz-block {
+        margin-bottom: 60px;
+    }
+
+    .option-card {
+        font-size: 14px;
+        min-height: 60px;
+        padding: 12px 14px;
+    }
+
+    .quiz-title {
+        font-size: clamp(26px, 8vw, 40px);
+    }
+}
+
+/* --- Fix 7: Ski intro section の余白調整 --- */
+@media (max-width: 768px) {
+    .ski-intro-section {
+        min-height: auto;
+        padding: 80px 6%;
+    }
+
+    .ski-intro-main {
+        flex-direction: column;
+    }
+}
+
+/* --- Quiz result page --- */
+.result-page {
+    color: #ffffff;
+    background-color: #0b1020;
+}
+
+.result-hero {
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(10, 14, 20, 0.45), rgba(10, 14, 20, 0.55)), url("image/header.JPEG");
     background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-  }
-
-  /* HERO + ABOUT use the same fixed background from body::before */
-  .hero-section,
-  .about-section {
-    background-image: none !important;
-    background-attachment: scroll !important;
-    background-color: transparent !important;
-  }
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 90px 8%;
 }
 
-@media (max-width: 768px) {
-  .ski-intro-section,
-  .resort-scroll-container,
-  #quiz-section,
-  #access,
-  .site-footer {
-    background-color: #f6f7f6; 
-  }
+.result-card {
+    width: min(980px, 100%);
+    background: rgba(20, 28, 40, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 22px;
+    padding: 48px clamp(28px, 5vw, 60px);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px rgba(9, 15, 25, 0.55);
+    text-align: left;
 }
 
-
-#access iframe {
-  width: 100% !important;
-  max-width: 100% !important;
-  display: block;
+.result-eyebrow {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+    letter-spacing: 0.32em;
+    margin-bottom: 16px;
 }
 
-/* =====================================================
-   MOBILE FIXES – SAFE VERSION (does NOT break desktop)
-   ===================================================== */
-
-/* 1. Prevent horizontal scrolling (MOBILE ONLY) */
-@media (max-width: 768px) {
-  html, body {
-    overflow-x: hidden;
-  }
+.result-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: nowrap;
+    margin-bottom: 12px;
 }
 
-/* 2. Fixed background for HERO + ABOUT (iOS safe) */
-@media (max-width: 768px) {
-  body {
-    position: relative;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    background-image:
-      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-      url('image/header.JPEG'); /* 確保檔名大小寫一致 */
-    background-size: cover;
-    background-position: center top;
-    background-repeat: no-repeat;
-  }
-
-  /* HERO & ABOUT use shared fixed background */
-  .hero-section,
-  .about-section {
-    background-image: none !important;
-    background-attachment: scroll !important;
-    background-color: transparent !important;
-  }
+.result-logo {
+    width: auto;
+    height: 270px;
+    max-width: 270px;
+    object-fit: contain;
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.35));
 }
 
-/* 3. Stop background bleed AFTER ABOUT */
-@media (max-width: 768px) {
-  .ski-intro-section,
-  .resort-scroll-container,
-  #quiz-section,
-  #access,
-  .site-footer {
-    background-color: #f6f7f6; /* or #fff if you prefer */
-  }
+.result-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-bottom: 0;
+    font-size: clamp(28px, 4vw, 40px);
+    letter-spacing: 0.12em;
+    text-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
 }
 
-/* 4. Responsive Google Map (prevents side scrolling) */
-@media (max-width: 768px) {
-  #access iframe {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 360px;
-    display: block;
-  }
+.result-target {
+    margin-bottom: 22px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
+    letter-spacing: 0.08em;
 }
 
-/* 5. Global box sizing (SAFE for sticky) */
-*, *::before, *::after {
-  box-sizing: border-box;
+.result-description {
+    margin-bottom: 32px;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 16px;
+    line-height: 2.2;
 }
 
-
-/* =========================================
-   MOBILE SIMPLIFICATION (SAFE TO PASTE)
-   ========================================= */
-
-  /* 2. Improve background framing */
-  .resort-item {
-    background-position: center top;
-  }
-
-  /* 3. Improve readability */
-  body {
-    line-height: 1.7;
-  }
-
-  h1, h2 {
-    line-height: 1.3;
-  }
+.result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
 }
 
-/* =========================================
-   MOBILE RESORT FIX (NO DESKTOP CHANGE)
-   ========================================= */
-@media (max-width: 768px) {
-
-  /* 1) Keep sticky on mobile (more stable height unit) */
-  .resort-item{
-    position: sticky;
-    top: 0;
-    height: 100svh; /* better than 100vh on iOS */
-  }
-
-  /* 2) Make the background image fully visible */
-  .resort-bg{
-    background-size: contain !important;   /* fully show image */
-    background-repeat: no-repeat !important;
-    background-position: center center !important;
-    background-color: #000;               /* letterbox area */
-  }
-
-  /* 3) Stop right-side clipping (remove desktop offsets) */
-  .resort-info{
-    left: 16px !important;
-    right: 16px !important;
-    width: auto !important;
-    transform: none !important;           /* cancels translateX on even items */
-    margin: 0 auto !important;
-    text-align: left !important;
-  }
-
-  /* 4) Make the glass panel fit within the screen */
-  .resort-details{
-    width: auto !important;
-    max-width: 100% !important;
-    padding: 18px 16px !important;
-  }
-
-  /* 5) Titles won't overflow */
-  .resort-item h2{
-    font-size: clamp(28px, 7vw, 40px);
-    line-height: 1.15;
-    white-space: normal;
-  }
-
-  /* 6) Safety: avoid any horizontal overflow inside resort */
-  .resort-item, .resort-info, .resort-details{
-    box-sizing: border-box;
-    max-width: 100%;
-  }
+.result-button {
+    display: inline-block;
+    padding: 12px 32px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    color: #1f2a36;
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 12px 28px rgba(12, 20, 35, 0.25);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
+.result-button:hover {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 18px 34px rgba(12, 20, 35, 0.45);
+    transform: translateY(-2px);
+}
 
+@media (max-width: 640px) {
+    .result-hero {
+        align-items: flex-start;
+        padding: 76px 6% 80px;
+    }
 
+    .result-card {
+        padding: 36px 24px;
+    }
 
+    .result-title-row {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .result-logo {
+        height: 140px;
+        max-width: 100%;
+    }
+
+    .result-title {
+        letter-spacing: 0.06em;
+        overflow-wrap: anywhere;
+    }
+
+    .result-target,
+    .result-description {
+        overflow-wrap: anywhere;
+    }
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+    .result-button {
+        width: 100%;
+        text-align: center;
+    }
+}

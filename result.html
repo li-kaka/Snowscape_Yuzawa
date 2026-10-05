@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="旅スタイル診断の回答から、あなたに合う越後湯沢のスキー場をご提案します。">
+    <title>診断結果 | 越後湯沢</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="result-page">
+    <main class="result-hero">
+        <section class="result-card" aria-live="polite">
+            <div id="result-error" hidden>
+                <p class="result-eyebrow">ERROR</p>
+                <h1 class="result-title">診断に失敗しました</h1>
+                <p class="result-description">回答が不足しています。もう一度診断してください。</p>
+                <div class="result-actions">
+                    <a class="result-button" href="quiz.html">もう一度診断する</a>
+                    <a class="result-button" href="index.html#ski">Back</a>
+                </div>
+            </div>
+
+            <div id="result-content" hidden>
+                <p class="result-eyebrow">あなたにぴったりのスキー場は...</p>
+                <div class="result-title-row">
+                    <h1 class="result-title" id="result-title"></h1>
+                    <img class="result-logo" id="result-logo" src="" alt="">
+                </div>
+                <p class="result-target" id="result-target"></p>
+                <p class="result-description" id="result-description"></p>
+                <div class="result-actions">
+                    <a class="result-button" id="result-link" href="index.html#ski">スキー場をもっと知る</a>
+                    <a class="result-button" href="quiz.html">もう一度診断する</a>
+                    <a class="result-button" href="index.html#ski">Back</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="resort-data.js"></script>
+    <script src="result.js"></script>
+</body>
+</html>
