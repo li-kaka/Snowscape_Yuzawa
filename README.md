@@ -39,7 +39,6 @@ Presentation/
 ├── result.html               # 診断結果ページ
 ├── resort-data.js            # 診断に使用するスキー場データ
 ├── result.js                 # 回答の判定と結果表示
-├── quiz-demo.html            # 診断画面の静的デモ
 ├── script.js                 # メニュー、スクロール、表示演出
 ├── style.css                 # 共通スタイルとresponsive対応
 └── image/                    # 背景画像、ロゴ、地図など
